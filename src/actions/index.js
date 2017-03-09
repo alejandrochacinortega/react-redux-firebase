@@ -1,16 +1,26 @@
-import {ADD_TODO, SET_TODOS } from './types';
+import {
+    ADD_TODO,
+    SET_TODOS,
+    DELETE_TODO }
+    from './types';
 
 export function addTodo(todo) {
-    console.log(' adding in the action ', todo);
     return {
         type: ADD_TODO,
         todo,
     }
 }
 
-export function setTodos(todos) {
+export function setTodos(data) {
     return {
         type: SET_TODOS,
-        todos,
+        data,
+    }
+}
+
+export function deleteItem(key) {
+    return {
+        type: DELETE_TODO,
+        key
     }
 }

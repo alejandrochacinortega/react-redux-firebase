@@ -7,6 +7,4 @@ const rootReducer = combineReducers({
     todos: TodosReducer,
 });
 
-console.log(' calling rootreduce ');
-
 export default rootReducer;

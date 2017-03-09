@@ -14,7 +14,6 @@ const store = createStore(
     applyMiddleware(sagaMiddleware)
 );
 
-console.log(' firebase ', firebaseApp);
 
 ReactDOM.render(
     <Provider store={store}>

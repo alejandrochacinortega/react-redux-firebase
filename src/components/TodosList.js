@@ -1,27 +1,29 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {todosRef} from '../firebase';
-import { setTodos } from '../actions/index';
+import {setTodos, deleteItem} from '../actions/index';
+import TodoItem from './TodoItem';
 
 class TodosList extends React.Component {
-    
+
     componentDidMount() {
         todosRef.on('value', snap => {
             let todos = [];
             snap.forEach(todo => {
-                todos.push(todo.val())
+                const serverKey = todo.key;
+                const data = {
+                    todo: todo.val().todo,
+                    serverKey: serverKey
+                };
+                todos.push(data)
             });
 
             this.props.setTodos(todos);
         })
     }
-    
-    renderTodo(todo, index) {
-        return (
-            <tr key={index}>
-                <td>{todo}</td>
-            </tr>
-        )
+
+    deleteItem(index) {
+        this.props.deleteItem(index)
     }
 
     render() {
@@ -33,7 +35,18 @@ class TodosList extends React.Component {
                 </tr>
                 </thead>
                 <tbody>
-                {this.props.todos.map(this.renderTodo)}
+                {this.props.todos.map((t, index) => {
+                    const todo = t.get('todo');
+                    const serverKey = t.get('serverKey');
+                    return (
+                        <TodoItem
+                            key={index}
+                            todo={todo}
+                            deleteItem={() => this.deleteItem(serverKey)}
+                        />
+                    )
+                })}
+
                 </tbody>
             </table>
         )
@@ -47,4 +60,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {setTodos})(TodosList);
+export default connect(mapStateToProps, {setTodos, deleteItem})(TodosList);
